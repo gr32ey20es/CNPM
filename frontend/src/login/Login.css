@@ -1,0 +1,33 @@
+* {
+    /* Without border-box, adding padding or border to an element can cause it to exceed its parent container */
+    box-sizing: border-box;
+    font-family: sans-serif;
+    /* Start with a clean slate and ensure consistent default styles across browsers */
+    margin: 0; 
+    padding: 0;
+}
+
+.row-center, .column-center {
+    /* Create a flex container, which enables a flex layout for its child elements (flex items) */
+    display: flex;
+    /* Align flex items along the cross-axis of the flex container */
+    align-items: center;
+    /* Distribute flex items along the main-axis of the flex container */
+    justify-content: center;
+}
+.column-center {
+    /* The main axis is defined by the flex-direction property (defaults: row) */
+    flex-direction: column
+}
+
+#login {
+    background-color: beige;
+    box-shadow: 0 0 10px pink;
+    border-radius: 10px;
+    padding: 10px 20px;
+}
+
+#login > * {
+    margin: 5px 0;
+    padding: 3px 10px;
+}
