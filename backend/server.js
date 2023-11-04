@@ -33,17 +33,27 @@ await client.connect()
 app.post('/a', upload.any(), async (req, res) => {
 	// Check the received request body in the server console
 	console.log(req.body)
+	
 	var data = await client.query(
 		'SELECT role FROM account WHERE email=\'' + req.body.email + '\' AND password=\'' + req.body.password + '\''
-	)
-	if (data['rows'].length) res.send(true) 
-	else res.send(false)
+	).then(()=>{res.send(true) },(error)=>{res.send(false)})
+	
 })
+app.post('/h',upload.any(),async (req,res)=>{
 
+
+	const {huyName} = req.body;
+	res.json({data:`${huyName} N.huy`});
+
+})
 // A route handler will be executed for any HTTP GET request that does not match any other defined routes
 app.get('*', (req, res) => {
+	var x = new Promise((res,rej)=>{
+		rej(new Error());
+	})
 	res.send('404 Page Not Found');
 })
+
 
 // Start the server
 app.listen(4000, () => {
