@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 
 // Create a new instance of the Axios client with custom configurations
 const login = axios.create({timeout: 1000})
@@ -15,7 +15,9 @@ login.authentication = async (e, email, password, setCheck) => {
 		// For FromDatas()
 		headers: {'Content-Type': 'multipart/form-data'}
 	});
+
     setCheck(response['data']);
-}
+};
+
 
 export default login;

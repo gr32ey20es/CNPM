@@ -26,6 +26,9 @@ function Login() {
         
         {/* Perhaps this can help you display the content of a server's response */}
         <p style={{width: "500px"}}>{JSON.stringify(check)}</p>
+
+        
+      
     </>
     )
 }
