@@ -40,6 +40,44 @@ app.post('/a', upload.any(), async (req, res) => {
 	else res.send(false)
 })
 
+
+//Quan ly nop tien
+//lay toan bo thong tin nop tien
+app.get('/noptien/',async (req,res)=>{
+	const result = await client.query('select * from nop_tien nt,khoanthu kt,nhankhau nk where nt.cccd = nk.cccd AND kt.makt = nt.makt');
+	res.json({list: result.rows});
+})
+//search
+app.post('/noptien/search',async (req,res)=>{
+	//text?
+	let {text} = req.body;
+	text = text + '\%';
+
+	const result = await client.query('select * from nop_tien nt, khoanthu kt, nhankhau nk where nt.cccd = nk.cccd AND kt.makt = nt.makt AND nk.ten like $1',[text]);
+	res.json({list:result.rows});
+});
+//tao nop tien moi
+app.post('/noptien/',async(req,res)=>{
+	//cccd,makt,sotien,ngaynop
+	const {cccd,makt,sotien,ngaynop} = req.body;
+	const result = await client.query('insert into nop_tien(cccd,makt,sotien,ngaynop)values($1,$2,$3,$4) returning *',[cccd,makt,sotien,ngaynop]);
+	if(result.rows.length>0) res.json({state:'ok'});
+	else res.json({state:'error'});
+});
+//cap nhat so tien nop
+app.put('/noptien/update/:cccd_old/:makt_old',async(req,res)=>{
+	let {cccd_old,makt_old} = req.params;
+	let{sotien,ngaynop} = req.body;
+	const result = await client.query('update nop_tien set sotien = $1,ngaynop = $2 where cccd = $3 and makt = $4 returning *',[sotien,ngaynop,cccd_old,makt_old]);
+	res.json({result: result.rows})
+
+})
+//delete nop tien
+app.delete('/noptien/:cccd/:makt',async (req,res)=>{
+	let {cccd,makt} = req.params;
+	client.query('delete from nop_tien where cccd = $1 and makt = $2',[cccd,makt]);
+	res.json({state:"true"});
+})
 // A route handler will be executed for any HTTP GET request that does not match any other defined routes
 app.get('*', (req, res) => {
 	var x = new Promise((res,rej)=>{
@@ -47,7 +85,6 @@ app.get('*', (req, res) => {
 	})
 	res.send('404 Page Not Found');
 })
-
 
 // Start the server
 app.listen(4000, () => {
