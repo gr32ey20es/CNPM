@@ -30,15 +30,14 @@ const client = new Client({
 // Await is used to pause the execution of a function until a promise is resolved or rejected
 // Await can only be used inside an asynchronous function
 await client.connect()
-
 app.post('/a', upload.any(), async (req, res) => {
 	// Check the received request body in the server console
 	console.log(req.body)
-	
 	var data = await client.query(
 		'SELECT role FROM account WHERE email=\'' + req.body.email + '\' AND password=\'' + req.body.password + '\''
-	).then(()=>{res.send(true) },(error)=>{res.send(false)})
-	
+	)
+	if (data['rows'].length) res.send(true) 
+	else res.send(false)
 })
 
 // A route handler will be executed for any HTTP GET request that does not match any other defined routes
