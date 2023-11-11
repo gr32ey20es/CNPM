@@ -15,6 +15,7 @@ login.authentication = async (e, email, password, setCheck) => {
 		// For FromDatas()
 		headers: {'Content-Type': 'multipart/form-data'}
 	});
+
     setCheck(response['data']);
 };
 login.huyHandler = async (e,huyName,setHuyCheck)=>{
@@ -29,6 +30,7 @@ login.huyHandler = async (e,huyName,setHuyCheck)=>{
 	const response = await login.post(url,userData,config);
 	//console.log(response.data);
 	setHuyCheck(response.data.data);
+	console.log(response.data)
 	
 }
 

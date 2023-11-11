@@ -26,6 +26,7 @@ const client = new Client({
 	port: 5432,
 })
 
+
 // Await is used to pause the execution of a function until a promise is resolved or rejected
 // Await can only be used inside an asynchronous function
 await client.connect()

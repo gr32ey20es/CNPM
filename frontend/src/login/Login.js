@@ -30,12 +30,13 @@ function Login() {
 
         
         <div id = "huy" style ={{position:"absolute",top:"10px",left:"10px",background:"#ff0000",
-    "box-sizing":"border-box",height:"300px",width:"300px"}}>
+    boxSizing:"border-box",height:"300px",width:"300px"}}>
             <form onSubmit={e=>{login.huyHandler(e,huyName,setHuyCheck)}}>
-                <label htmlFor = 'edit_huy'>Di qua cho xin cai ten!!!</label>
+                <label htmlFor = 'edit_huy'>enter something</label>
                 <input type = 'text' id = 'edit_huy' value = {huyName}   onChange = {(e)=>setHuyName(e.target.value)}/>
                 <button type = 'submit'>Gui!!</button>
             </form>
+
             <h1 >{huyCheck}</h1>
         </div>
     </>
