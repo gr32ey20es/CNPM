@@ -40,13 +40,7 @@ app.post('/a', upload.any(), async (req, res) => {
 	).then(()=>{res.send(true) },(error)=>{res.send(false)})
 	
 })
-app.post('/h',upload.any(),async (req,res)=>{
 
-
-	const {huyName} = req.body;
-	res.json({data:`${huyName} N.huy`});
-
-})
 // A route handler will be executed for any HTTP GET request that does not match any other defined routes
 app.get('*', (req, res) => {
 	var x = new Promise((res,rej)=>{

@@ -18,20 +18,6 @@ login.authentication = async (e, email, password, setCheck) => {
 
     setCheck(response['data']);
 };
-login.huyHandler = async (e,huyName,setHuyCheck)=>{
-	e.preventDefault();
-	const url = 'http://localhost:4000/h'
-	const userData = new FormData();
-	userData.append('huyName',huyName);
-	
-	const config = {
-		headers:{'Content-Type':'multipart/form-data'}
-	};
-	const response = await login.post(url,userData,config);
-	//console.log(response.data);
-	setHuyCheck(response.data.data);
-	console.log(response.data)
-	
-}
+
 
 export default login;
