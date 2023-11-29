@@ -32,10 +32,28 @@ await client.connect()
 
 app.post('/a', upload.any(), async (req, res) => {
 	// Check the received request body in the server console
+	// them nhan khau
+	const {manhankhau, tennhankhau, diachi, CCCD} = req.body;
+
+	console.log(req.body)
+	var data = await client.query(
+		'INSERT into NHANKHAU(manhankhau, tennhankhau, diachi, CCCD) values($1, $2, $3, $4)'
+		, [manhankhau, tennhankhau, diachi, CCCD]
+	)
+	res.json({status: "SUCCESS"})
+})
+
+app.post('/a', upload.any(), async (req, res) => {
+	// Check the received request body in the server console
+	// manhankhau -> tennhankhau
+	const {manhankhau} = req.body;
+
 	console.log(req.body)
 	var data = await client.query(
 		'SELECT role FROM account WHERE email=\'' + req.body.email + '\' AND password=\'' + req.body.password + '\''
+		,[manhankhau]
 	)
+	res.json({result:data.rows, result2:})
 	if (data['rows'].length) res.send(true) 
 	else res.send(false)
 })

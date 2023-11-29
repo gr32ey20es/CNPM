@@ -16,6 +16,7 @@ login.authentication = async (e, email, password, setCheck) => {
 		headers: {'Content-Type': 'multipart/form-data'}
 	});
     setCheck(response['data']);
+	console.log(response.data);
 }
 
 export default login;
