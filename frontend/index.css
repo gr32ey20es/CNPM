@@ -1,0 +1,9 @@
+#grid{
+    display: grid;
+
+    grid-template-columns: 1fr 500px 1fr 500px;
+    grid-template-rows: 100px 200px;
+}
+i{
+    border:1px solid red;
+}
