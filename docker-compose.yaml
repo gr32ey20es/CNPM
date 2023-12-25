@@ -1,0 +1,47 @@
+version: '3'
+services:  
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '3000:3000'
+  #   volumes:
+  #     - ./frontend/src:/app/src
+
+  database:
+    container_name: database
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./database/data:/var/lib/postgresql/data
+      - ./database/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+  
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - '4000:4000'
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - database
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    depends_on:
+      - database
+
+
