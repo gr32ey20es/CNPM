@@ -27,36 +27,52 @@ const FormTamVang = ({ data, close, handleClickTamVang,setList }) => {
   };
 
   const { Formik } = formik;
-
+  const checkNgay = (values) =>{
+    let [year,month,day] = values.split('-')
+    let currentdate = new Date()
+    const [cyear,cmonth,cday] = `${currentdate.getFullYear()}-${currentdate.getMonth()+1}-${currentdate.getDate()}`.split('-')
+    if(year<cyear)return true;
+    else if(year === cyear){
+      if(month<cmonth)return true;
+      else if(month === cmonth){
+        if(day>cday)return false; else return true
+      }else return false
+    }else return false
+   
+  }
   const schema = yup.object().shape({
     idnguoitamvang: yup.number()
         .typeError('Vui lòng nhập một số')
         .required('Vui lòng nhập giá trị')
         .positive('Vui lòng nhập số dương'),
     ngaybatdau: yup.string()
-        .required('Vui lòng nhập năm, tháng, ngày')
-        .matches(
-        /^\d{4}-\d{2}-\d{2}$/,
-        'Ngày tháng năm phải có định dạng yyyy-mm-dd (ví dụ: 2000-02-20)'
-        )
-        .test('valid-date', 'Ngày không hợp lệ', function (value) {
-        if (!value) return true;
-        const [year, month, day] = value.split('-');
-        const isValidDate = !isNaN(Date.parse(`${month}/${day}/${year}`));
-        return isValidDate;
-        }),
+    .required('Vui lòng nhập năm, tháng, ngày')
+    .matches(
+      /^\d{4}-\d{2}-\d{2}$/,
+      'Ngày tháng năm phải có định dạng yyyy-mm-dd '
+    )
+    .test('valid-date', 'Ngày không hợp lệ', function (value) {
+      if (!value) return true;
+      const [year, month, day] = value.split('-');
+      const isValidDate = !isNaN(Date.parse(`${month}/${day}/${year}`));
+     if(isValidDate){
+      return checkNgay(value)
+     }else return true
+    }),
     ngayketthuc: yup.string()
-        .required('Vui lòng nhập năm, tháng, ngày')
-        .matches(
-        /^\d{4}-\d{2}-\d{2}$/,
-        'Ngày tháng năm phải có định dạng yyyy-mm-dd (ví dụ: 2000-02-20)'
-        )
-        .test('valid-date', 'Ngày không hợp lệ', function (value) {
-        if (!value) return true;
-        const [year, month, day] = value.split('-');
-        const isValidDate = !isNaN(Date.parse(`${month}/${day}/${year}`));
-        return isValidDate;
-        }),
+    .required('Vui lòng nhập năm, tháng, ngày')
+    .matches(
+      /^\d{4}-\d{2}-\d{2}$/,
+      'Ngày tháng năm phải có định dạng yyyy-mm-dd '
+    )
+    .test('valid-date', 'Ngày không hợp lệ', function (value) {
+      if (!value) return true;
+      const [year, month, day] = value.split('-');
+      const isValidDate = !isNaN(Date.parse(`${month}/${day}/${year}`));
+     if(isValidDate){
+      return checkNgay(value)
+     }else return true
+    }),
     nguyennhan: yup.string().required('Đây là trường bắt buộc')
   });
 

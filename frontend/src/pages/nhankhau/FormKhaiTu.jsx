@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import * as formik from 'formik';
@@ -9,12 +9,13 @@ import Row from 'react-bootstrap/Row';
 import { IoCloseCircleOutline } from "react-icons/io5";
 import moment from 'moment'
 import './FormS.css'
+import { AuthContext } from "../../context/authContext";
 
 
 const FormKhaiTu = ({List , data, close, handleClickKhaiTu,setList }) => {
 
   const [hotennguoichet,setHotennguoichet] = useState(data.hoten)
-  
+  const { currentUser } = useContext(AuthContext);
   const listHoKhau = List.map((item) => {
     if(item.mahokhau === data.mahokhau && item.id !==data.id && item.trangthai!=='Tạm vắng' && item.trangthai!=='Khai tử')
       return item
@@ -35,7 +36,19 @@ const FormKhaiTu = ({List , data, close, handleClickKhaiTu,setList }) => {
   };
 
   const { Formik } = formik;
-
+  const checkNgay = (values) =>{
+    let [year,month,day] = values.split('-')
+    let currentdate = new Date()
+    const [cyear,cmonth,cday] = `${currentdate.getFullYear()}-${currentdate.getMonth()+1}-${currentdate.getDate()}`.split('-')
+    if(year<cyear)return true;
+    else if(year === cyear){
+      if(month<cmonth)return true;
+      else if(month === cmonth){
+        if(day>cday)return false; else return true
+      }else return false
+    }else return false
+   
+  }
   const schema = yup.object().shape({
     idnguoikhai: yup.number()
         .typeError('Vui lòng nhập một số')
@@ -45,13 +58,15 @@ const FormKhaiTu = ({List , data, close, handleClickKhaiTu,setList }) => {
       .required('Vui lòng nhập năm, tháng, ngày')
       .matches(
         /^\d{4}-\d{2}-\d{2}$/,
-        'Ngày tháng năm sinh phải có định dạng yyyy-mm-dd (ví dụ: 2000-02-20)'
+        'Ngày tháng năm phải có định dạng yyyy-mm-dd '
       )
       .test('valid-date', 'Ngày không hợp lệ', function (value) {
         if (!value) return true;
         const [year, month, day] = value.split('-');
         const isValidDate = !isNaN(Date.parse(`${month}/${day}/${year}`));
-        return isValidDate;
+       if(isValidDate){
+        return checkNgay(value)
+       }else return true
       }),
     nguyennhan: yup.string().required('Đây là trường bắt buộc')
   });
@@ -90,7 +105,7 @@ const FormKhaiTu = ({List , data, close, handleClickKhaiTu,setList }) => {
         validationSchema={schema}
         onSubmit={onSubmitForm}
         initialValues={{
-          idnguoikhai: listHoKhau[0].id,
+          idnguoikhai: listHoKhau.length === 0 ?currentUser.UserId:listHoKhau[0].id,
           idnguoichet: data.id,
           ngaychet: '',
           nguyennhan: ''
@@ -110,8 +125,9 @@ const FormKhaiTu = ({List , data, close, handleClickKhaiTu,setList }) => {
                   aria-label="select example" 
                   onChange={handleChange}
                   value={values.idnguoikhai}
+                  disabled  = {listHoKhau.length === 0}
                 >
-                  {List.map((item)=>{
+                  {listHoKhau.length === 0? <option value = {currentUser.UserId}>{currentUser.UserId}</option>:List.map((item)=>{
                     if(item.mahokhau === data.mahokhau && item.id !==data.id && item.trangthai!=='Tạm vắng' && item.trangthai!=='Khai tử'){
                         return <option value={item.id}>{item.id}</option>
                       }
@@ -132,8 +148,9 @@ const FormKhaiTu = ({List , data, close, handleClickKhaiTu,setList }) => {
                   aria-label="select example" 
                   onChange={handleChange}
                   value={values.idnguoikhai}
+                  disabled  = {listHoKhau.length === 0}
                 >
-                  {List.map((item)=>{
+                  {listHoKhau.length === 0? <option value = {currentUser.UserId}>{currentUser.Role}</option>: List.map((item)=>{
                     if(item.mahokhau === data.mahokhau && item.id !==data.id && item.trangthai!=='Tạm vắng' && item.trangthai!=='Khai tử'){
                         return <option value={item.id}>{item.hoten}</option>
                       }

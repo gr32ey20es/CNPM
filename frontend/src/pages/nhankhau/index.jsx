@@ -87,6 +87,10 @@ const NhanKhau = () => {
     let selectedRowModel = [...table.getSelectedRowModel().flatRows];
     let listRows = [];
     for(let element of selectedRowModel){
+      if(element.original.quanhe==='Chủ hộ'){
+        alert('Hộ mới không được chứa chủ hộ');
+        return
+      }
       listRows = [...listRows,element.original]
     }
     
@@ -110,7 +114,12 @@ const NhanKhau = () => {
   const onClickXoa = async (table) => {
     let rows = table.getSelectedRowModel().flatRows
     table.toggleAllRowsSelected(false)
-    console.log(table)
+    for(let element of rows){
+      if(element.original.quanhe === 'Chủ hộ'){
+        alert('Không được xóa chủ hộ');
+        return
+      }
+    }
     if(window.confirm('Xác nhận xóa!')) {
       var ids = [];
       let data = listNhanKhau;
