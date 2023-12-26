@@ -116,8 +116,14 @@ const NhanKhau = () => {
     table.toggleAllRowsSelected(false)
     for(let element of rows){
       if(element.original.quanhe === 'Chủ hộ'){
-        alert('Không được xóa chủ hộ');
-        return
+        var mahokhau = element.original.mahokhau
+        let selectedNhankhau = rows.filter((element)=>element.original.mahokhau===mahokhau)
+        let ownHokhau = listNhanKhau.filter((element)=>element.mahokhau===mahokhau)
+        if(selectedNhankhau.length!==ownHokhau.length){
+          alert('Không được xóa chủ hộ');
+          return
+        }
+        
       }
     }
     if(window.confirm('Xác nhận xóa!')) {

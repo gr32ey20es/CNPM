@@ -77,8 +77,8 @@ const FormTamVang = ({ data, close, handleClickTamVang,setList }) => {
   });
 
   const onSubmitForm =  async (values) => {
-     if(values.ngaybatdau>values.ngayketthuc){
-      alert("Ngày vắng phải nhổ hơn ngày kết thúc")
+     if(values.ngaybatdau>=values.ngayketthuc){
+      alert("Ngày vắng phải nhỏ hơn ngày kết thúc")
       return
      }
      console.log(values);
