@@ -126,8 +126,8 @@ CREATE SEQUENCE khaitu_id_seq INCREMENT 1 MINVALUE 2 MAXVALUE 2147483647 CACHE 1
 
 CREATE TABLE "public"."khaitu" (
     "id" integer DEFAULT nextval('khaitu_id_seq') NOT NULL,
-    "idnguoikhai" character varying(100) NOT NULL,
-    "idnguoichet" character varying(100) NOT NULL,
+    "idnguoikhai" integer  NOT NULL,
+    "idnguoichet" integer NOT NULL,
     "ngaychet" date NOT NULL,
     "nguyennhan" character varying(100) NOT NULL,
     CONSTRAINT "khaitu_pk" PRIMARY KEY ("id")
@@ -173,7 +173,7 @@ CREATE SEQUENCE tamvang_id_seq INCREMENT 1 MINVALUE 2 MAXVALUE 2147483647 CACHE 
 
 CREATE TABLE "public"."tamvang" (
     "id" integer DEFAULT nextval('tamvang_id_seq') NOT NULL,
-    "idnguoitamvang" character varying(100) NOT NULL,
+    "idnguoitamvang" integer  NOT NULL,
     "ngaybatdau" date NOT NULL,
     "ngayketthuc" date NOT NULL,
     "nguyennhan" character varying(100) NOT NULL,
