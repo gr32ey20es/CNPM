@@ -26,56 +26,78 @@ const FormTamTru = ({ data, close, handleClickSua,setList }) => {
   };
 
   const { Formik } = formik;
-
+  const checkNgay = (values) =>{
+    let [year,month,day] = values.split('-')
+    let currentdate = new Date()
+    const [cyear,cmonth,cday] = `${currentdate.getFullYear()}-${currentdate.getMonth()+1}-${currentdate.getDate()}`.split('-')
+    if(year<cyear)return true;
+    else if(year === cyear){
+      if(month<cmonth)return true;
+      else if(month === cmonth){
+        if(day>cday)return false; else return true
+      }else return false
+    }else return false
+   
+  }
   const schema = yup.object().shape({
     hoten: yup.string().required("Vui lòng nhập họ và tên"),
     ngaysinh: yup.string()
-      .required('Vui lòng nhập năm, tháng, ngày sinh')
-      .matches(
-        /^\d{4}-\d{2}-\d{2}$/,
-        'Ngày tháng năm sinh phải có định dạng yyyy-mm-dd (ví dụ: 2000-02-20)'
-      )
-      .test('valid-date', 'Ngày không hợp lệ', function (value) {
-        if (!value) return true;
-        const [year, month, day] = value.split('-');
-        const isValidDate = !isNaN(Date.parse(`${month}/${day}/${year}`));
-        return isValidDate;
-      }),
+    .required('Vui lòng nhập năm, tháng, ngày')
+    .matches(
+      /^\d{4}-\d{2}-\d{2}$/,
+      'Ngày tháng năm phải có định dạng yyyy-mm-dd '
+    )
+    .test('valid-date', 'Ngày không hợp lệ', function (value) {
+      if (!value) return true;
+      const [year, month, day] = value.split('-');
+      const isValidDate = !isNaN(Date.parse(`${month}/${day}/${year}`));
+     if(isValidDate){
+      return checkNgay(value)
+     }else return true
+    }),
     gioitinh: yup.string().oneOf(['Nam','Nữ'],'Vui lòng chọn giới tính'),
     cccd: yup.string().nullable()
       .matches(
         /^\d{12}$/,
-        'Căn cước công dân phải là một chuỗi 12 chữ số(ví dụ: 012345678910)'
+        'Căn cước công dân phải là một chuỗi 12 chữ số'
       ),
     quequan: yup.string().required('Vui lòng điền quê quán(ví dụ: Hà Nội)'),
-    diachi: yup.string().required('Vui lòng điền địa chỉ(ví dụ: Số 1 ngõ A, đường B, xã C, thành phố D, tỉnh E)'),
+    diachi: yup.string().required('Vui lòng điền địa chỉ'),
     ngaybatdau: yup.string()
-      .required('Vui lòng nhập')
-      .matches(
-        /^\d{4}-\d{2}-\d{2}$/,
-        'Ngày tháng năm phải có định dạng yyyy-mm-dd (ví dụ: 2000-02-20)'
-      )
-      .test('valid-date', 'Ngày không hợp lệ', function (value) {
-        if (!value) return true;
-        const [year, month, day] = value.split('-');
-        const isValidDate = !isNaN(Date.parse(`${month}/${day}/${year}`));
-        return isValidDate;
-      }),
+    .required('Vui lòng nhập năm, tháng, ngày')
+    .matches(
+      /^\d{4}-\d{2}-\d{2}$/,
+      'Ngày tháng năm phải có định dạng yyyy-mm-dd '
+    )
+    .test('valid-date', 'Ngày không hợp lệ', function (value) {
+      if (!value) return true;
+      const [year, month, day] = value.split('-');
+      const isValidDate = !isNaN(Date.parse(`${month}/${day}/${year}`));
+     if(isValidDate){
+      return checkNgay(value)
+     }else return true
+    }),
     ngayketthuc: yup.string()
-      .required('Vui lòng nhập')
-      .matches(
-        /^\d{4}-\d{2}-\d{2}$/,
-        'Ngày tháng năm phải có định dạng yyyy-mm-dd (ví dụ: 2000-02-20)'
-      )
-      .test('valid-date', 'Ngày không hợp lệ', function (value) {
-        if (!value) return true;
-        const [year, month, day] = value.split('-');
-        const isValidDate = !isNaN(Date.parse(`${month}/${day}/${year}`));
-        return isValidDate;
-      }),
+    .required('Vui lòng nhập năm, tháng, ngày')
+    .matches(
+      /^\d{4}-\d{2}-\d{2}$/,
+      'Ngày tháng năm phải có định dạng yyyy-mm-dd '
+    )
+    .test('valid-date', 'Ngày không hợp lệ', function (value) {
+      if (!value) return true;
+      const [year, month, day] = value.split('-');
+      const isValidDate = !isNaN(Date.parse(`${month}/${day}/${year}`));
+     if(isValidDate){
+      return checkNgay(value)
+     }else return true
+    }),
   });
 
   const onSubmitForm =  async (values) => {
+    if(values.ngaybatdau>values.ngayketthuc){
+      alert('Ngày bắt đầu phải nhỏ hơn ngày kết thúc');
+      return
+    }
     console.log(values)
     const { id } = values
     if(id) handleClickSua(values)

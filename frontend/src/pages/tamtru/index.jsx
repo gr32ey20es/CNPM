@@ -30,7 +30,8 @@ const TamTru = () => {
   const onClickXoa = async (table) => {
     let rows = table.getSelectedRowModel().flatRows
     
-    console.log(table)
+    
+    table.toggleAllRowsSelected(false)
     if(window.confirm('Xác nhận xóa!')) {
       var ids = [];
       let data = listTamTru;
@@ -40,10 +41,10 @@ const TamTru = () => {
       }
       setListTamTru(data)
       await axios.post('http://localhost:4000/api/tamtru/delete',ids);
-      table.toggleAllRowsSelected(false)
-      alert('Đã xóa');
+      
+        alert('Đã xóa');
+     
     }
-    else table.toggleAllRowsSelected(false)
   }
 
   useEffect(() => {
