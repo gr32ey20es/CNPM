@@ -3,7 +3,7 @@ import db from "../db.js"
 export const thongkeGioiTinh = (req,res)=>{
     const {nam} = req.body;
     db.query(
-        'SELECT * FROM nhankhau WHERE EXTRACT(YEAR FROM ngaysinh)<=$1',
+        'SELECT * FROM nhankhau WHERE EXTRACT(YEAR FROM ngaysinh)<=$1 AND nhankhau.id NOT IN (SELECT idnguoichet FROM khaitu WHERE EXTRACT(YEAR FROM ngaychet)<$1) AND nhankhau.id NOT IN (SELECT idnguoitamvang FROM tamvang WHERE EXTRACT(YEAR FROM ngaybatdau)<$1 AND EXTRACT(YEAR FROM ngayketthuc )>$1) ',
         [nam],
         (error,results) => {
             if(error) {
@@ -32,8 +32,8 @@ export const thongkeTuoi = (req,res) => {
     const {nam} = req.body;
     const TUOILAODONG = 65;
     db.query(
-        'SELECT nhankhau.*,($1-EXTRACT(YEAR FROM ngaysinh)) as tuoi FROM nhankhau ',
-        [nam],
+        'SELECT nhankhau.*,($1-EXTRACT(YEAR FROM ngaysinh)) as tuoi FROM nhankhau WHERE nhankhau.id NOT IN (SELECT idnguoichet FROM khaitu WHERE EXTRACT(YEAR FROM ngaychet)<$1) AND nhankhau.id NOT IN (SELECT idnguoitamvang FROM tamvang WHERE EXTRACT(YEAR FROM ngaybatdau)<$1 AND EXTRACT(YEAR FROM ngayketthuc )>$1) ',
+        [Number(nam)],
         (error, results) => {
             if(error) {
                 res.status(500).send(error.message)
