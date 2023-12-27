@@ -30,7 +30,7 @@ const Tuoi = ({nam})=>{
     ]}
     width={600}
     height={300}
-  /><div>Thống kê theo tuổi</div>
+  /><div style={{marginTop:'10px', marginLeft: '50%'}}>Thống kê theo tuổi</div>
     </div>)
 }
 

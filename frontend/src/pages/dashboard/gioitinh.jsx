@@ -24,7 +24,7 @@ const  GioiTinh = ({nam})=>{
     width={600}
     height={300}
   />
-  <div>Thống kê theo giới tính</div>
+  <div style={{marginTop:'10px', marginLeft: '50%'}}>Thống kê theo giới tính</div>
       </div>
     )
 }
